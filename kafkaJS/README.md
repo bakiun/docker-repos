@@ -17,7 +17,7 @@ const { KafkaJS } = require("./index");
 
 (async () => {
   const kafka = new KafkaJS({ clientId: "classTester", brokers: ["KAFKA-SERVER-IP:9092"] }); //TODO: Enter Kafka Server ip address.
-  
+
   // if topic is doesn't exist use the code below.
   // await kafka.createTopics([{ topic: "testTopic", numPartitions: 1 }]);
 
@@ -35,9 +35,13 @@ const { KafkaJS } = require("./index");
   const kafka = new KafkaJS({ clientId: "classTester", brokers: ["KAFKA-SERVER-IP:9092"] }); //TODO: Enter Kafka Server ip address.
   await kafka.connectConsumer({ groupId: "test-group", topic: "testTopic" });
   setInterval(async () => {
-    let msg = await kafka.getMsg();
-    console.log(">>> msg: \n", msg);
-    await kafka.msgHandled(); // This is to keep getting messages. If doesn't use this function, You're taken every time same message.
+    try {
+      let msg = await kafka.getMsg();
+      console.log(">>> msg: \n", msg);
+      await kafka.msgHandled(); // This is to keep getting messages. If doesn't use this function, You're taken every time same message.
+    } catch (e) {
+      console.log(e);
+    }
   }, 10000);
 })();
 ```
