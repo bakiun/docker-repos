@@ -1,0 +1,35 @@
+## Simple Kafka Server ##
+
+version: '3.8'
+
+name: apache-kafka
+services: 
+  zookeeper:
+    container_name: ZOOKEEPER
+    image: zookeeper
+    restart: always
+    ports:
+      - 2181:2181
+    networks:
+      - kafka_network
+
+  kafka:
+    container_name: KAFKA
+    image: confluentinc/cp-kafka
+    restart: always
+    environment:
+      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'true'
+      # KAFKA_DELETE_TOPIC_ENABLE: 'true'
+    ports:
+      - 9092:9092
+    networks:
+      - kafka_network
+    depends_on:
+      - zookeeper
+
+networks:
+  kafka_network:
+    name: kafka_network
