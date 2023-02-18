@@ -26,7 +26,7 @@ const { KafkaJS } = require("./index");
 })();
 ```
 
-- Second, is read the message.
+- Second, read the message.
 
 ```js
 // consumer.js
